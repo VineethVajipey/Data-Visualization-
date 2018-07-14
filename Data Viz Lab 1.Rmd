@@ -1,0 +1,38 @@
+---
+title: "Data Viz Lab 1"
+author: "Vineeth Vajipey"
+output:
+  html_document:
+    df_print: paged
+---
+```{r}
+movies <- read.csv("data/movies.csv")
+class(movies)
+
+library(dplyr)
+glimpse(movies)
+
+library(ggplot2)
+ggplot(movies, aes(x=genre)) + geom_bar()
+
+g <- ggplot(movies, aes(x = genre)) + geom_bar()
+g <- g + theme(text = element_text(size=16), axis.text.x = element_text(angle=70,hjust=1))
+g <- g + labs(x="", y="Number", title="Popular Movies, 1920-2016", subtitle="Source: http://s3.amazonaws.com/dcwoods2717/movies.csv")
+g
+```
+Tasks.
+```{r}
+gbud <- ggplot(movies, aes(x=budget)) + geom_histogram() 
+gbud
+gbud <- gbud + geom_histogram(binwidth = 50000000)
+gbud
+gbud <- gbud + geom_histogram(binwidth = 100000000, bins = )
+gbud <- gbud + labs(x="Budget", y="Number", title="Budget for Popular Movies, 1920-2016")
+gbud
+```
+
+
+
+
+
+

@@ -1,0 +1,84 @@
+---
+title: 'Visualization Lab 1: Introduction to ggplot2'
+author: "Data Science Team"
+output:
+  html_document: default
+  html_notebook: default
+  pdf_document: default
+---
+
+
+**Instructions**: With your lab partner(s) complete the tasks below. Don't worry about understanding everything perfectly but do ask a member of the teaching team if something is preventing from moving forward. At the end of lab session, upload your own lab report as `HTML` on `Canvas`. 
+
+- If your file isn't knitting for some reason, upload the `Rmd` instead. 
+- Labs will be graded on a credit / no credit basis so don't worry about finishing. As long as you show *effort* you'll get credit.
+- You must upload your lab by 10:30am, so don't forget to leave a moment at the end of lab!
+
+# Step 0: A Little Data Wrangling
+
+- [Download](http://web.stanford.edu/class/stats101/visualization/visualization.zip) and decompress the supplemental files for the visualization week into a subfolder of your Data Science 101 files. 
+
+- Create a new `RNotebook` in the visualization folder, add your name, and title the document something like "Data Viz Lab 1." Also, delete everything below the header.
+
+- In a new `R` code chunk, use `read.csv` to load the movies data set, which is found in the `data` folder. Notice that if you hit `tab` inside the quotes where you would type the file name `RStudio` will display the files in the `RNotebook`'s working directory.
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+movies <- read.csv("http://s3.amazonaws.com/dcwoods2717/movies.csv")
+```
+
+- `ggplot2` expects data to be in a `data.frame`; confirm that `movies` is one by checking its `class`.
+
+```{r, eval=FALSE}
+class(movies)
+```
+
+# Step 1: Loading Packages (a.k.a. Libraries)
+
+Often, we wish to enhance `R` by loading additional packages. For example, the library `dplyr` offers a useful way to compactly display the contents of a `data.frame`. Libraries need to be loaded in each `RNotebook` to be used (but only need to be once per document). Add the following...
+
+```{r, eval=FALSE}
+library(dplyr)
+glimpse(movies)
+```
+
+\newpage
+# gg basics
+
+- `ggplot` requires a `data.frame`. 
+- `aes` (as in 'aesthestics') is used to specify `x` and/or `y`
+- Additional features are added (literally using `+`) to layer on additional function calls, including a wide variety of statistics .
+
+```{r, fig.height=2}
+library(ggplot2)
+ggplot(movies, aes(x=genre)) + geom_bar() 
+```
+
+# gg coding style
+
+ggplots are often saved as objects to which additional features are added one or two at a time.
+```{r, fig.height=3.5}
+g <- ggplot(movies, aes(x=genre)) + geom_bar()
+g <- g + theme(text = element_text(size=16), 
+               axis.text.x = element_text(angle=70,hjust=1)) 
+g <- g + labs(x="", y="N", title="Popular Movies, 1920-2016", 
+              subtitle="Source: http://s3.amazonaws.com/dcwoods2717/movies.csv") 
+g
+```
+
+# Tasks
+
+1. Make a histogram with ggplot of any continuous variable found in `movies` using `geom_histogram()`.
+
+2. Make a few different versions of the plot by altering `bins` or `binwidth` (parameters of `geom_histogram`) and/or by placing your `x` variable on a log scale (for example, `log(cast_facebook_likes - 1, base=10)`. 
+
+3. Pick the version of the graph you feel best represents the data and format the labels, titles, and so on such that the context is clear and everything is readable.
+
+4. Now create a time series, i.e., using `geom_point()`, make `year` the `x` variable and choose another continuous variable to be `y`. Also, add a trend line with `geom_smooth()`. Your code will look something like:
+
+```{r, eval=FALSE}
+ggplot(movies, aes(x=year, y=profit)) + geom_point() + geom_smooth()
+```
+Format the graph and add a sentence explaining whether or not there appears to be a trend over time.
+
+5. Choose a categorical variable to be `x` and a continuous variable to be `y`. Make two plots, one with `geom_boxpot()` and the other with `geom_violin()`. Which do you prefer and why? 
+
